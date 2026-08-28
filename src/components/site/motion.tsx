@@ -123,7 +123,7 @@ export function ParallaxImage({
         height={height}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
-        style={reduce ? undefined : { y, scale }}
+        style={reduce ? {} : { y, scale }}
         className={cn("h-full w-full object-cover", imgClassName)}
       />
     </div>
