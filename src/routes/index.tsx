@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef, useState } from "react";
-import { ArrowDown, Quote } from "lucide-react";
+import { ArrowDown, ArrowRight, Quote } from "lucide-react";
 import { org, programs, stories, values } from "@/data/site";
 import { belonging, heroFloat, heroMain, programImages } from "@/lib/images";
 import { ActionLink, SectionLabel } from "@/components/site/kit";
@@ -291,12 +291,8 @@ function WhatWeDo() {
               <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
                 {current.summary.slice(0, 150)}…
               </p>
-              <ActionLink
-                to="/programs/$slug"
-                variant="outline"
-                className="shrink-0 px-5 py-3 text-xs"
-              >
-                Read more
+              <ActionLink to="/programs" variant="outline" className="shrink-0 px-5 py-3 text-xs">
+                All programs
               </ActionLink>
             </div>
           </div>
@@ -347,9 +343,14 @@ function ProgramSpreads() {
                   ))}
                 </ul>
                 <div className="mt-8">
-                  <ActionLink to="/programs/$slug" variant="outline" className="px-6 py-3 text-xs">
+                  <Link
+                    to="/programs/$slug"
+                    params={{ slug: program.slug }}
+                    className="group/link inline-flex items-center gap-3 rounded-full border border-primary/30 px-6 py-3 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                  >
                     Explore this program
-                  </ActionLink>
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </Link>
                 </div>
               </div>
             </article>
@@ -430,9 +431,14 @@ function Belonging() {
           </Reveal>
           <Reveal delay={0.2}>
             <div className="mt-10">
-              <ActionLink to="/programs/$slug" variant="outline">
+              <Link
+                to="/programs/$slug"
+                params={{ slug: "community-integration" }}
+                className="inline-flex items-center gap-3 rounded-full border border-primary/30 px-7 py-3.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
                 Community integration
-              </ActionLink>
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
             </div>
           </Reveal>
         </div>
