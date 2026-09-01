@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { nav, org } from "@/data/site";
 import { ActionLink } from "./kit";
 import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/UWSA_LOGO-03.png.asset.json";
 
 function Wordmark({ tone = "dark" }: { tone?: "dark" | "light" }) {
   return (
@@ -15,9 +16,16 @@ function Wordmark({ tone = "dark" }: { tone?: "dark" | "light" }) {
     >
       <span
         aria-hidden="true"
-        className="grid size-9 place-items-center rounded-full bg-primary text-[0.8rem] font-extrabold tracking-tight text-primary-foreground transition-colors group-hover:bg-clay"
+        className={cn(
+          "grid size-10 place-items-center rounded-full transition-colors",
+          tone === "dark" ? "bg-cream" : "bg-cream/90",
+        )}
       >
-        UW
+        <img
+          src={logoAsset.url}
+          alt=""
+          className="size-6 object-contain"
+        />
       </span>
       <span className="leading-none">
         <span
