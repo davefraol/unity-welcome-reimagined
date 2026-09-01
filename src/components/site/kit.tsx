@@ -25,15 +25,22 @@ export function ActionLink({
   variant = "primary",
   className,
   hash,
+  params,
 }: {
   to: string;
   hash?: string;
+  params?: Record<string, string>;
   children: ReactNode;
   variant?: ActionVariant;
   className?: string;
 }) {
   return (
-    <Link to={to} {...(hash ? { hash } : {})} className={cn(base, variants[variant], className)}>
+    <Link
+      to={to}
+      {...(hash ? { hash } : {})}
+      {...(params ? { params } : {})}
+      className={cn(base, variants[variant], className)}
+    >
       <span>{children}</span>
       <ArrowRight
         className="size-4 transition-transform duration-300 group-hover:translate-x-1"
