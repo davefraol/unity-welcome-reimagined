@@ -520,6 +520,7 @@ function HomePage() {
       <Values />
       <Belonging />
       <StoriesTeaser />
+      <LatestFromBlog />
       <CTASection />
     </PageTransition>
   );
