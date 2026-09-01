@@ -16,7 +16,10 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GetSupportRouteImport } from './routes/get-support'
 import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as StoriesRouteImport } from './routes/stories'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ProgramsIndexRouteImport } from './routes/programs.index'
 import { Route as ProgramsSlugRouteImport } from './routes/programs.$slug'
 import { Route as StoriesIndexRouteImport } from './routes/stories.index'
@@ -57,10 +60,25 @@ const ProgramsRoute = ProgramsRouteImport.update({
   path: '/programs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StoriesRoute = StoriesRouteImport.update({
   id: '/stories',
   path: '/stories',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
 } as any)
 const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
   id: '/',
@@ -87,13 +105,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/get-support': typeof GetSupportRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/stories/$slug': typeof StoriesSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/stories/': typeof StoriesIndexRoute
 }
@@ -101,11 +122,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
-  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/get-support': typeof GetSupportRoute
+  '/resources': typeof ResourcesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/stories/$slug': typeof StoriesSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/programs': typeof ProgramsIndexRoute
   '/stories': typeof StoriesIndexRoute
 }
@@ -114,13 +137,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/get-support': typeof GetSupportRoute
   '/programs': typeof ProgramsRouteWithChildren
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/programs/$slug': typeof ProgramsSlugRoute
   '/stories/$slug': typeof StoriesSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/stories/': typeof StoriesIndexRoute
 }
@@ -134,9 +160,12 @@ export interface FileRouteTypes {
     | '/contact'
     | '/get-support'
     | '/programs'
+    | '/resources'
     | '/stories'
+    | '/blog/$slug'
     | '/programs/$slug'
     | '/stories/$slug'
+    | '/blog/'
     | '/programs/'
     | '/stories/'
   fileRoutesByTo: FileRoutesByTo
@@ -144,11 +173,13 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
-    | '/blog'
     | '/contact'
     | '/get-support'
+    | '/resources'
+    | '/blog/$slug'
     | '/programs/$slug'
     | '/stories/$slug'
+    | '/blog'
     | '/programs'
     | '/stories'
   id:
@@ -160,9 +191,12 @@ export interface FileRouteTypes {
     | '/contact'
     | '/get-support'
     | '/programs'
+    | '/resources'
     | '/stories'
+    | '/blog/$slug'
     | '/programs/$slug'
     | '/stories/$slug'
+    | '/blog/'
     | '/programs/'
     | '/stories/'
   fileRoutesById: FileRoutesById
@@ -171,10 +205,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
   GetSupportRoute: typeof GetSupportRoute
   ProgramsRoute: typeof ProgramsRouteWithChildren
+  ResourcesRoute: typeof ResourcesRoute
   StoriesRoute: typeof StoriesRouteWithChildren
 }
 
@@ -229,12 +264,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/stories': {
       id: '/stories'
       path: '/stories'
       fullPath: '/stories'
       preLoaderRoute: typeof StoriesRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/programs/': {
       id: '/programs/'
@@ -267,6 +323,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 interface ProgramsRouteChildren {
   ProgramsSlugRoute: typeof ProgramsSlugRoute
   ProgramsIndexRoute: typeof ProgramsIndexRoute
@@ -298,10 +366,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
   GetSupportRoute: GetSupportRoute,
   ProgramsRoute: ProgramsRouteWithChildren,
+  ResourcesRoute: ResourcesRoute,
   StoriesRoute: StoriesRouteWithChildren,
 }
 export const routeTree = rootRouteImport

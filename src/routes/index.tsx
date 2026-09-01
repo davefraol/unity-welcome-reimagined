@@ -13,6 +13,7 @@ import {
   PageTransition,
 } from "@/components/site/motion";
 import { CTASection } from "@/components/site/CTASection";
+import { LatestFromBlog } from "@/components/blog/LatestFromBlog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -520,6 +521,7 @@ function HomePage() {
       <Values />
       <Belonging />
       <StoriesTeaser />
+      <LatestFromBlog />
       <CTASection />
     </PageTransition>
   );
